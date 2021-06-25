@@ -1,22 +1,61 @@
 <h2>Page Color</h2>
-<p>Color: <input id="pageColor" value="0c0c0c"></p>
+<p>Change your page background color.</p>
+<label>Color: <input id="pageColor" value="0c0c0c"></label>
+<br>
 <label>
   <input id="allPages" type="checkbox" value="allPages">
   Apply to all pages?
 </label>
+<br>
+<br>
 <button id="colorize">Colorize</button>
 <button id="cancel">Cancel</button>
 <script>
-
 document.getElementById('colorize').onclick = () => {
   // todo: validate hex
   const colorStr = document.getElementById('pageColor').value;
   const allPages = document.getElementById('allPages').checked ? true : false;
-  
+
   parent.postMessage({ pluginMessage: { type: 'colorize-page', colorStr, allPages} }, '*')
 }
 document.getElementById('cancel').onclick = () => {
   parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
 }
-
 </script>
+<style>
+  html { font-family: "Inter", "system-ui"; }
+
+  @supports (font-variation-settings: normal) {
+    html { font-family: "Inter var", "system-ui"; }
+  }
+  
+  * { font-family: inherit; line-height: inherit; font-synthesis: none; }
+  a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote,
+  body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt,
+  em, embed, fieldset, figcaption, figure, footer, form, grid, h1, h2, h3, h4, h5,
+  h6, header, hgroup, hr, html, i, iframe, img, ins, kbd, label, legend, li, main,
+  mark, menu, nav, noscript, object, ol, output, p, pre, q, s, samp, section,
+  small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th,
+  thead, time, tr, tt, u, ul, var, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+  }
+  body {
+    font: 12px/16px 'Inter', system-ui, -system-ui, sans-serif;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    color: #080707; 
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+  }
+
+  button {
+    background: #fff;
+    color: #080707;
+    padding: 16px;
+    border: 2px solid #080707;
+    margin-bottom: 16px;
+  }
+</style>

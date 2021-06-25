@@ -6,6 +6,7 @@
 // full browser environment (see documentation).
 
 // This shows the HTML page in "ui.html".
+
 figma.showUI(__html__);
 
 // Calls to "parent.postMessage" from within the HTML page will trigger this
@@ -23,8 +24,8 @@ figma.ui.onmessage = msg => {
         b: parseInt(result[3], 16)
       } : null;
     }
-  
     let rgbValues = hexToRgb(msg.colorStr);
+
     if (msg.allPages) {
       const pages = figma.root.findAll(node => node.type === "PAGE")
       for (let i = 0; i < pages.length; i ++) {
