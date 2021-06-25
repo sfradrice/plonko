@@ -12,19 +12,28 @@ figma.showUI(__html__);
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
 figma.ui.onmessage = msg => {
-  // One way of distinguishing between different types of messages sent from
-  // your HTML page is to use an object with a "type" property like this.
-  if (msg.type === 'create-rectangles') {
-    const nodes: SceneNode[] = [];
-    for (let i = 0; i < msg.count; i++) {
-      const rect = figma.createRectangle();
-      rect.x = i * 150;
-      rect.fills = [{type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}];
-      figma.currentPage.appendChild(rect);
-      nodes.push(rect);
+
+  if (msg.type === 'colorize-page') {
+    
+    function hexToRgb(hex) {
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
     }
-    figma.currentPage.selection = nodes;
-    figma.viewport.scrollAndZoomIntoView(nodes);
+  
+    let rgbValues = hexToRgb(msg.colorStr);
+    if (msg.allPages) {
+      const pages = figma.root.findAll(node => node.type === "PAGE")
+      for (let i = 0; i < pages.length; i ++) {
+        figma.root.children[i].backgrounds = [{type: 'SOLID', color: {r: rgbValues.r / 255, g: rgbValues.g / 255, b: rgbValues.b / 255}}];
+      }
+    } else {
+      let currentPage = figma.currentPage;
+      currentPage.backgrounds = [{type: 'SOLID', color: {r: rgbValues.r / 255, g: rgbValues.g / 255, b: rgbValues.b / 255}}];
+    }  
   }
 
   // Make sure to close the plugin when you're done. Otherwise the plugin will

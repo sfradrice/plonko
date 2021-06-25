@@ -1,15 +1,20 @@
-<h2>Rectangle Creator</h2>
-<p>Count: <input id="count" value="5"></p>
-<button id="create">Create</button>
+<h2>Page Color</h2>
+<p>Color: <input id="pageColor" value="0c0c0c"></p>
+<label>
+  <input id="allPages" type="checkbox" value="allPages">
+  Apply to all pages?
+</label>
+<button id="colorize">Colorize</button>
 <button id="cancel">Cancel</button>
 <script>
 
-document.getElementById('create').onclick = () => {
-  const textbox = document.getElementById('count');
-  const count = parseInt(textbox.value, 10);
-  parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*')
+document.getElementById('colorize').onclick = () => {
+  // todo: validate hex
+  const colorStr = document.getElementById('pageColor').value;
+  const allPages = document.getElementById('allPages').checked ? true : false;
+  
+  parent.postMessage({ pluginMessage: { type: 'colorize-page', colorStr, allPages} }, '*')
 }
-
 document.getElementById('cancel').onclick = () => {
   parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
 }
